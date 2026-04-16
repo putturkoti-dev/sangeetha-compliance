@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block content %}
+
+<div class="container-fluid">
+
+<style>
+.page-card{
+background:#fff;
+border-radius:18px;
+box-shadow:0 8px 25px rgba(0,0,0,.06);
+padding:22px;
+}
+.top-btn{
+border-radius:10px;
+padding:10px 18px;
+font-weight:600;
+}
+.table-wrap{
+overflow:auto;
+border-radius:14px;
+}
+.table thead th{
+position:sticky;
+top:0;
+background:#0d6efd;
+color:#fff;
+white-space:nowrap;
+}
+.table td{
+white-space:nowrap;
+vertical-align:middle;
+}
+</style>
+
+<!-- HEADER -->
+<div class="d-flex justify-content-between mb-4">
+
+<div>
+<h2 class="fw-bold">Employees</h2>
+<p class="text-muted">Manage employee data professionally</p>
+</div>
+
+<div class="d-flex gap-2">
+
+<a href="{% url 'export_employees' %}?month={{ month }}&year={{ year }}" class="btn btn-outline-success top-btn">
+Export Excel
+</a>
+
+<button class="btn btn-primary top-btn"
+data-bs-toggle="modal"
+data-bs-target="#empModal">
++ Add Employee
+</button>
+
+<button class="btn btn-outline-primary top-btn"
+onclick="addColumn()">
++ Add Column
+</button>
+
+</div>
+</div>
+
+<!-- TOP -->
+<div class="page-card mb-4">
+
+<div class="row">
+
+<div class="col-md-6">
+
+<form method="POST" enctype="multipart/form-data" class="d-flex gap-2">
+{% csrf_token %}
+<input type="hidden" name="action" value="import_excel">
+
+<input type="file" name="excel_file" class="form-control" required>
+
+<button class="btn btn-success top-btn">
+Upload Excel
+</button>
+
+</form>
+
+</div>
+
+<div class="col-md-6">
+<input type="text" id="searchInput" class="form-control" placeholder="Search employee...">
+</div>
+
+</div>
+
+</div>
+
+<!-- Hidden Form -->
+<form method="POST" id="columnForm">
+{% csrf_token %}
+<input type="hidden" name="action" value="add_column">
+<input type="hidden" name="new_column" id="new_column_input">
+</form>
+
+<!-- TABLE -->
+<div class="page-card">
+
+<div class="table-wrap">
+
+<table class="table table-bordered table-hover" id="empTable">
+
+<thead>
+<tr>
+
+{% for col in columns %}
+<th>
+
+<div class="d-flex justify-content-between">
+
+<span>{{ col }}</span>
+
+<form method="POST">
+{% csrf_token %}
+<input type="hidden" name="action" value="delete_column">
+<input type="hidden" name="column" value="{{ col }}">
+<button class="btn btn-sm btn-danger">x</button>
+</form>
+
+</div>
+
+</th>
+{% endfor %}
+
+<th>Action</th>
+
+</tr>
+</thead>
+
+<tbody>
+
+{% for row in data %}
+<tr>
+
+{% for col in columns %}
+<td>{{ row.dynamic_data|get_item:col }}</td>
+{% endfor %}
+
+<td class="d-flex gap-1">
+
+<a href="{% url 'edit_employee' row.id %}" class="btn btn-warning btn-sm">
+Edit
+</a>
+
+<a href="{% url 'delete_employee' row.id %}"
+onclick="return confirm('Delete employee?')"
+class="btn btn-danger btn-sm">
+Delete
+</a>
+
+</td>
+
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+</div>
+
+<!-- ADD MODAL -->
+<div class="modal fade" id="empModal">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+
+<form method="POST">
+{% csrf_token %}
+<input type="hidden" name="action" value="add_employee">
+
+<div class="modal-header">
+<h5>Add Employee</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<div class="row">
+
+{% for col in columns %}
+<div class="col-md-6 mb-2">
+<input class="form-control" name="{{ col }}" placeholder="{{ col }}">
+</div>
+{% endfor %}
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+<button class="btn btn-success">Save</button>
+</div>
+
+</form>
+
+</div>
+</div>
+</div>
+
+<script>
+
+function addColumn(){
+let col = prompt("Enter column name");
+if(!col) return;
+
+document.getElementById("new_column_input").value = col;
+document.getElementById("columnForm").submit();
+}
+
+document.getElementById("searchInput").addEventListener("keyup", function(){
+
+let value = this.value.toLowerCase();
+let rows = document.querySelectorAll("#empTable tbody tr");
+
+rows.forEach(function(row){
+row.style.display =
+row.innerText.toLowerCase().includes(value)
+? ""
+: "none";
+});
+
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">System Logs</h3>
+            <p class="text-muted mb-0">
+                Monitor application activity and system events
+            </p>
+        </div>
+
+        <div class="text-muted small">
+            <i class="fas fa-wave-square me-1"></i> Live Monitoring
+        </div>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+            <div class="card log-card">
+                <p>Total Logs</p>
+                <h4>6</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card log-card">
+                <p>Errors</p>
+                <h4 class="text-danger">1</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card log-card">
+                <p>Warnings</p>
+                <h4 class="text-warning">1</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card log-card">
+                <p>Success</p>
+                <h4 class="text-success">2</h4>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RECENT ACTIVITY -->
+    <div class="card p-3">
+
+        <!-- HEADER -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h6 class="fw-bold mb-0">Recent Activity</h6>
+                <small class="text-muted">
+                    Latest system events and user actions
+                </small>
+            </div>
+
+            <select class="form-select filter-select">
+                <option>All Types</option>
+                <option>Info</option>
+                <option>Success</option>
+                <option>Warning</option>
+                <option>Error</option>
+            </select>
+        </div>
+
+        <!-- LOG ITEM -->
+        <div class="log-item">
+            <div class="log-left">
+                <i class="fas fa-user"></i>
+            </div>
+
+            <div class="log-content">
+                <div class="log-badges">
+                    <span class="badge info">INFO</span>
+                    <span class="badge tag">user</span>
+                </div>
+
+                <p class="mb-1 fw-semibold">User logged in</p>
+                <small class="text-muted">by Akhil</small>
+            </div>
+
+            <div class="log-time">44 minutes ago</div>
+        </div>
+
+        <!-- LOG ITEM -->
+        <div class="log-item">
+            <div class="log-left">
+                <i class="fas fa-user"></i>
+            </div>
+
+            <div class="log-content">
+                <div class="log-badges">
+                    <span class="badge success">SUCCESS</span>
+                    <span class="badge tag">employee</span>
+                </div>
+
+                <p class="mb-1 fw-semibold">New employee record created</p>
+                <small class="text-muted">
+                    Employee ID: EMP001, Name: Akhil
+                </small>
+            </div>
+
+            <div class="log-time">54 minutes ago</div>
+        </div>
+
+        <!-- LOG ITEM -->
+        <div class="log-item">
+            <div class="log-left">
+                <i class="fas fa-file-alt"></i>
+            </div>
+
+            <div class="log-content">
+                <div class="log-badges">
+                    <span class="badge warning">WARNING</span>
+                    <span class="badge tag">compliance</span>
+                </div>
+
+                <p class="mb-1 fw-semibold">Compliance document expiring soon</p>
+                <small class="text-muted">
+                    License ABC123 expires in 7 days
+                </small>
+            </div>
+
+            <div class="log-time">1 hours ago</div>
+        </div>
+
+        <!-- LOG ITEM -->
+        <div class="log-item">
+            <div class="log-left">
+                <i class="fas fa-cog"></i>
+            </div>
+
+            <div class="log-content">
+                <div class="log-badges">
+                    <span class="badge error">ERROR</span>
+                    <span class="badge tag">system</span>
+                </div>
+
+                <p class="mb-1 fw-semibold">Database connection failed</p>
+                <small class="text-muted">
+                    Connection timeout after 30 seconds
+                </small>
+            </div>
+
+            <div class="log-time">1 hours ago</div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+        <h3 class="fw-bold">Form Generator</h3>
+        <p class="text-muted">
+            Generate populated Word documents from templates using employee data
+        </p>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card form-card p-4">
+
+                <h5 class="fw-bold mb-2">Form Generator</h5>
+                <p class="text-muted small mb-4">
+                    Generate populated Word documents from templates using employee data
+                </p>
+
+                <!-- TEMPLATE -->
+                <div class="mb-3">
+                    <label class="form-label">Select Template</label>
+                    <select class="form-select custom-select">
+                        <option>Choose a template...</option>
+                    </select>
+                </div>
+
+                <!-- DATA TABLE -->
+                <div class="mb-4">
+                    <label class="form-label">Select Data Table</label>
+                    <select class="form-select custom-select">
+                        <option>Choose a table...</option>
+                    </select>
+                </div>
+
+                <!-- BUTTON -->
+                <div class="text-end">
+                    <button class="btn btn-dark px-4">
+                        Generate
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

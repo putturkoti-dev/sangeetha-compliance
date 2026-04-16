@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+        <h3 class="fw-bold">DOCX to PDF</h3>
+        <p class="text-muted">
+            Upload a Word document and convert it to PDF. Requires LibreOffice on the server.
+        </p>
+    </div>
+
+    <!-- CENTER CARD -->
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card convert-card p-4">
+
+                <h5 class="fw-bold mb-2">
+                    <i class="fas fa-file-alt me-2"></i> DOCX to PDF Converter
+                </h5>
+
+                <p class="text-muted small mb-4">
+                    Upload a .docx or .doc file and convert it to PDF. Max 25MB.
+                </p>
+
+                <!-- FILE INPUT -->
+                <label class="form-label">File</label>
+
+                <div class="upload-box mb-4">
+                    <input type="file" id="fileInput" hidden>
+                    
+                    <div onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-upload fa-2x mb-2"></i>
+                        <p class="mb-0">
+                            Drag and drop or click to select a .docx file
+                        </p>
+                    </div>
+                </div>
+
+                <!-- BUTTON -->
+                <button class="btn btn-primary w-100">
+                    Convert to PDF
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

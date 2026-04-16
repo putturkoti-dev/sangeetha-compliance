@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="mb-3">
+        <h3 class="fw-bold">Compliance Management</h3>
+        <p class="text-muted">Track and manage regulatory compliance submissions</p>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="d-flex justify-content-end mb-4 gap-2">
+        <button class="btn btn-light">
+            <i class="fas fa-sync-alt me-1"></i> Refresh
+        </button>
+        <a href="/compliance/new/" class="btn btn-dark">
+    <i class="fas fa-plus me-1"></i> New Compliance
+</a>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+            <div class="card summary-card">
+                <div class="icon bg-light">
+                    <i class="fas fa-file-alt text-primary"></i>
+                </div>
+                <p>Total Submissions</p>
+                <h4>0</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card summary-card">
+                <div class="icon bg-light">
+                    <i class="fas fa-file text-info"></i>
+                </div>
+                <p>Forms Available</p>
+                <h4>15</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card summary-card">
+                <div class="icon bg-light">
+                    <i class="fas fa-balance-scale text-primary"></i>
+                </div>
+                <p>Compliance Acts</p>
+                <h4>10</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card summary-card bg-success-subtle">
+                <div class="icon bg-white">
+                    <i class="fas fa-building text-success"></i>
+                </div>
+                <p>Branches</p>
+                <h4>0</h4>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RECENT ACTIVITY -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header fw-bold">
+            <i class="fas fa-chart-line me-2"></i> Recent activity
+        </div>
+        <div class="card-body text-center text-muted">
+            No recent submissions. Create one from New Compliance.
+        </div>
+    </div>
+
+    <!-- ALL SUBMISSIONS -->
+    <div class="card shadow-sm">
+        <div class="card-header fw-bold">
+            All submissions
+            <div class="text-muted small">0 submissions in total</div>
+        </div>
+        <div class="card-body text-center text-muted">
+            No compliance submissions yet. Use "New Compliance" to create and generate forms.
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

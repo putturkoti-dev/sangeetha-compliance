@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center">
+    <div>
+        <h4 class="mb-1">Overview Dashboard</h4>
+        <p class="text-muted mb-0">Quick snapshot of your organization</p>
+    </div>
+
+    <button class="btn btn-light border">
+        <i class="bi bi-arrow-clockwise"></i> Refresh
+    </button>
+</div>
+
+<div class="row mt-4">
+
+    <!-- Branches -->
+    <div class="col-md-2">
+        <div class="card-box">
+            <div class="d-flex justify-content-between">
+                <div class="icon blue"><i class="bi bi-building"></i></div>
+                <span class="badge bg-success-subtle text-success">All Operational</span>
+            </div>
+
+            <div class="card-value mt-2">0</div>
+            <div class="card-title">Total Branches</div>
+            <small class="text-muted">0 Active</small>
+        </div>
+    </div>
+
+    <!-- Employees -->
+    <div class="col-md-2">
+        <div class="card-box">
+            <div class="icon green"><i class="bi bi-people"></i></div>
+
+            <div class="card-value mt-2">0</div>
+            <div class="card-title">Total Employees</div>
+
+            <small class="text-muted">
+                🔵 Male: 0 &nbsp; 🔴 Female: 0
+            </small>
+        </div>
+    </div>
+
+    <!-- Payroll -->
+    <div class="col-md-2">
+        <div class="card-box">
+            <div class="icon orange"><i class="bi bi-currency-rupee"></i></div>
+
+            <div class="card-value mt-2">₹0</div>
+            <div class="card-title">Monthly Payroll</div>
+
+            <small class="text-muted">Employer PF & ESIC included</small>
+        </div>
+    </div>
+
+    <!-- Utilization -->
+    <div class="col-md-2">
+        <div class="card-box">
+            <div class="icon purple"><i class="bi bi-graph-up"></i></div>
+
+            <div class="card-value mt-2">0%</div>
+            <div class="card-title">Manpower Utilization</div>
+
+            <!-- PROGRESS BAR -->
+            <div class="progress mt-2" style="height:6px;">
+                <div class="progress-bar bg-primary" style="width:0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compliance -->
+    <div class="col-md-2 mt-2">
+        <div class="card-box">
+            <div class="d-flex justify-content-between">
+                <div class="icon green"><i class="bi bi-shield-check"></i></div>
+                <span class="badge bg-primary">All Licenses Active</span>
+            </div>
+
+            <div class="card-value mt-2">Active</div>
+            <div class="card-title">Compliance Status</div>
+
+            <span class="badge bg-success-subtle text-success mt-2">
+                All licenses valid
+            </span>
+        </div>
+    </div>
+
+</div>
+
+<!-- CHARTS -->
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="section-box">
+            <h6>Branch-wise Employee Count (Top 15)</h6>
+
+            <div class="text-center text-muted mt-5">
+                <i class="bi bi-people fs-1"></i>
+                <p>No employee data available</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="section-box">
+            <h6>Gender Distribution</h6>
+
+            <div class="text-center text-muted mt-5">
+                <i class="bi bi-person-circle fs-1"></i>
+                <p>No gender data available</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- SUMMARY -->
+<div class="section-box">
+    <h6>Branch Summary</h6>
+
+    <div class="text-center text-muted mt-4">
+        <i class="bi bi-file-earmark-text fs-1"></i>
+        <p>No branch data available</p>
+        <small>Add branches to see the summary</small>
+    </div>
+</div>
+
+{% endblock %}
