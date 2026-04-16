@@ -126,8 +126,3 @@ import dj_database_url
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-if 'RENDER' in os.environ:
-    DATABASES['default'] = dj_database_url.config(
-        conn_max_age=600,
-        ssl_require=True
-    )
