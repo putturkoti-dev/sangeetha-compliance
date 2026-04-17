@@ -58,21 +58,28 @@ onclick="return confirm('Delete ALL Branch data?')"
 class="btn btn-danger top-btn">
 Delete All
 </a>
-<a href="{% url 'delete_all_columns' %}"
-   class="btn btn-dark"
-   onclick="return confirm('Delete ALL columns?')">
-   Delete All Columns
-</a>
+
 <button class="btn btn-primary top-btn"
 data-bs-toggle="modal"
 data-bs-target="#branchModal">
 + Add Branch
 </button>
 
+<button class="btn btn-outline-primary top-btn"
+onclick="addColumn()">
++ Add Column
+</button>
+
+<a href="{% url 'delete_all_columns' %}"
+class="btn btn-dark top-btn"
+onclick="return confirm('Delete ALL columns?')">
+Delete All Columns
+</a>
+
 </div>
 </div>
 
-<!-- SEARCH -->
+<!-- TOP -->
 <div class="page-card mb-4">
 
 <div class="row">
@@ -97,6 +104,12 @@ Upload Excel
 </div>
 </div>
 
+<form method="POST" id="columnForm">
+{% csrf_token %}
+<input type="hidden" name="action" value="add_column">
+<input type="hidden" name="new_column" id="new_column_input">
+</form>
+
 <!-- TABLE -->
 <div class="page-card">
 
@@ -106,10 +119,25 @@ Upload Excel
 
 <thead>
 <tr>
+
 {% for col in columns %}
-<th>{{ col }}</th>
+<th>
+<div class="d-flex justify-content-between align-items-center">
+<span>{{ col }}</span>
+
+<form method="POST">
+{% csrf_token %}
+<input type="hidden" name="action" value="delete_column">
+<input type="hidden" name="column" value="{{ col }}">
+<button class="btn btn-sm btn-danger">x</button>
+</form>
+
+</div>
+</th>
 {% endfor %}
+
 <th>Action</th>
+
 </tr>
 </thead>
 
@@ -130,7 +158,7 @@ Edit
 </a>
 
 <a href="{% url 'delete_branch' row.id %}"
-onclick="return confirm('Delete this row?')"
+onclick="return confirm('Delete row?')"
 class="btn btn-danger btn-sm">
 Delete
 </a>
@@ -150,8 +178,53 @@ Delete
 
 </div>
 
+<!-- ADD BRANCH MODAL -->
+<div class="modal fade" id="branchModal">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+
+<form method="POST">
+{% csrf_token %}
+<input type="hidden" name="action" value="add_branch">
+
+<div class="modal-header">
+<h5>Add Branch</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<div class="row">
+
+{% for col in columns %}
+<div class="col-md-6 mb-2">
+<input class="form-control" name="{{ col }}" placeholder="{{ col }}">
+</div>
+{% endfor %}
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+<button class="btn btn-success">Save</button>
+</div>
+
+</form>
+
+</div>
+</div>
+</div>
+
 <script>
-document.getElementById("searchInput").addEventListener("keyup", function () {
+function addColumn(){
+let col = prompt("Enter column name");
+if(!col) return;
+document.getElementById("new_column_input").value = col;
+document.getElementById("columnForm").submit();
+}
+
+document.getElementById("searchInput").addEventListener("keyup", function(){
 let value = this.value.toLowerCase();
 let rows = document.querySelectorAll("#branchTable tbody tr");
 
