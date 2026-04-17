@@ -70,9 +70,9 @@ onclick="addColumn()">
 + Add Column
 </button>
 
-<a href="{% url 'delete_all_columns' %}"
-class="btn btn-dark top-btn"
-onclick="return confirm('Delete ALL columns?')">
+<a href="{% url 'delete_all_columns' %}?page=branches"
+onclick="return confirm('Delete ALL columns?')"
+class="btn btn-dark top-btn">
 Delete All Columns
 </a>
 
