@@ -87,18 +87,31 @@ def employees(request):
             file = request.FILES.get("excel_file")
 
             if file:
-                df = pd.read_excel(file)
+                import pandas as pd
 
+                df = pd.read_excel(file).fillna("")
+
+                # create columns
                 for col in df.columns:
                     DynamicColumn.objects.get_or_create(
-                        name=col,
+                        name=str(col),
                         month=month,
                         year=year
                     )
 
+                # rows insert
                 for _, row in df.iterrows():
+
+                    clean_data = {}
+
+                    for col in df.columns:
+                        val = row[col]
+
+                        # convert everything to string
+                        clean_data[str(col)] = str(val).strip()
+
                     Employee.objects.create(
-                        dynamic_data=row.to_dict(),
+                        dynamic_data=clean_data,
                         month=month,
                         year=year
                     )
