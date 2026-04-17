@@ -919,34 +919,45 @@ h3 {
     <span class="badge-dot"></span>
 </div>
         <!-- Filters -->
-<form method="GET" action="/employees/" class="d-flex gap-2">
+<form method="GET" action="{{ request.path }}" class="d-flex gap-2">
 
-    <select name="state" class="form-control">
-        <option value="">Select State</option>
-        {% for s in states %}
-            <option value="{{ s }}">{{ s }}</option>
-        {% endfor %}
-    </select>
+<!-- STATE -->
+<select name="state" class="filter-select">
+<option value="">State</option>
+{% for s in states %}
+<option value="{{ s }}" {% if request.GET.state == s %}selected{% endif %}>{{ s }}</option>
+{% endfor %}
+</select>
 
-    <select name="branch" class="form-control">
-        <option value="">Select Branch</option>
-        {% for b in branch_list %}
-            <option value="{{ b }}">{{ b }}</option>
-        {% endfor %}
-    </select>
+<!-- BRANCH -->
+<select name="branch" class="filter-select">
+<option value="">Branch</option>
+{% for b in branch_list %}
+<option value="{{ b }}" {% if request.GET.branch == b %}selected{% endif %}>{{ b }}</option>
+{% endfor %}
+</select>
 
-    <select name="month" class="form-control">
-        {% for i in "123456789101112"|make_list %}
-            <option value="{{ i }}">{{ i }}</option>
-        {% endfor %}
-    </select>
+<!-- MONTH AUTO -->
+<select name="month" class="filter-select" id="monthSelect">
+<option value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8">August</option>
+<option value="9">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
 
-    <select name="year" class="form-control">
-        <option>2025</option>
-        <option>2026</option>
-    </select>
+<!-- YEAR AUTO -->
+<select name="year" class="filter-select" id="yearSelect">
+</select>
 
-    <button class="btn btn-primary">Go</button>
+<button class="go-btn">Go</button>
 
 </form>
         <!-- PROFILE -->
@@ -1027,7 +1038,30 @@ function prevStep() {
     }
 }
 </script>
+<script>
+/* AUTO MONTH + YEAR */
 
+const monthSelect = document.getElementById("monthSelect");
+const yearSelect = document.getElementById("yearSelect");
+
+const today = new Date();
+const currentMonth = today.getMonth() + 1;
+const currentYear = today.getFullYear();
+
+/* Month auto select */
+monthSelect.value = "{{ request.GET.month|default:'' }}" || currentMonth;
+
+/* Year infinite */
+for(let y = 2025; y <= currentYear + 20; y++){
+    let option = document.createElement("option");
+    option.value = y;
+    option.text = y;
+    yearSelect.appendChild(option);
+}
+
+/* Year auto select */
+yearSelect.value = "{{ request.GET.year|default:'' }}" || currentYear;
+</script>
 
 
 </body>
