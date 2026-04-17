@@ -234,11 +234,7 @@ def branches(request):
 
     data = Branch.objects.filter(month=month, year=year).order_by('-id')
 
-    columns = DynamicColumn.objects.filter(
-        month=month,
-        year=year
-    ).values_list('name', flat=True)
-
+    columns = BranchColumn.objects.all().values_list('name', flat=True)
     if request.method == "POST":
 
         action = request.POST.get("action")
@@ -247,21 +243,13 @@ def branches(request):
         if action == "add_column":
             col = request.POST.get("new_column")
             if col:
-                DynamicColumn.objects.get_or_create(
-                    name=col,
-                    month=month,
-                    year=year
-                )
+                BranchColumn.objects.get_or_create(name=col)
             return redirect(request.get_full_path())
 
         # DELETE COLUMN
         if action == "delete_column":
             col = request.POST.get("column")
-            DynamicColumn.objects.filter(
-                name=col,
-                month=month,
-                year=year
-            ).delete()
+            BranchColumn.objects.filter(name=col).delete()
             return redirect(request.get_full_path())
 
         # ADD EMPLOYEE
@@ -292,12 +280,7 @@ def branches(request):
 
                 # create columns
                 for col in df.columns:
-                    DynamicColumn.objects.get_or_create(
-                        name=str(col),
-                        month=month,
-                        year=year
-                    )
-
+                    BranchColumn.objects.get_or_create(name=str(col))
                 # rows insert
                 for _, row in df.iterrows():
 

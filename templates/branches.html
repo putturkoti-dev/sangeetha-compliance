@@ -2,89 +2,224 @@
 {% load custom_tags %}
 {% block content %}
 
-<div class="container-fluid">
+<div class="container-fluid py-4">
 
 <style>
+/* PAGE */
+.page-title{
+font-size:42px;
+font-weight:800;
+color:#111827;
+margin-bottom:4px;
+}
+.page-sub{
+font-size:16px;
+color:#6b7280;
+margin-bottom:0;
+}
+
+/* CARD */
 .page-card{
-background:#fff;
-border-radius:18px;
-box-shadow:0 8px 25px rgba(0,0,0,.06);
-padding:22px;
+background:#ffffff;
+border-radius:22px;
+box-shadow:0 12px 35px rgba(0,0,0,.06);
+padding:24px;
+border:1px solid #eef1f6;
 }
+
+/* BUTTONS */
 .top-btn{
-border-radius:10px;
-padding:10px 18px;
-font-weight:600;
+border:none;
+border-radius:14px;
+padding:14px 22px;
+font-weight:700;
+font-size:15px;
+transition:.25s;
+min-width:140px;
 }
+
+.btn-export{
+background:#fff;
+border:2px solid #18a957;
+color:#18a957;
+}
+.btn-export:hover{
+background:#18a957;
+color:#fff;
+transform:translateY(-2px);
+}
+
+.btn-danger2{
+background:#e33445;
+color:#fff;
+}
+.btn-danger2:hover{
+background:#c92435;
+transform:translateY(-2px);
+}
+
+.btn-primary2{
+background:linear-gradient(135deg,#6d5efc,#3e54ff);
+color:#fff;
+}
+.btn-primary2:hover{
+transform:translateY(-2px);
+color:#fff;
+}
+
+.btn-outline2{
+background:#fff;
+border:2px solid #3b82f6;
+color:#2563eb;
+}
+.btn-outline2:hover{
+background:#2563eb;
+color:#fff;
+transform:translateY(-2px);
+}
+
+.btn-dark2{
+background:linear-gradient(135deg,#111827,#334155);
+color:#fff;
+}
+.btn-dark2:hover{
+transform:translateY(-2px);
+color:#fff;
+}
+
+/* INPUT */
+.form-control{
+border-radius:14px;
+padding:14px 16px;
+border:1px solid #dbe1ea;
+box-shadow:none;
+}
+.form-control:focus{
+border-color:#4f46e5;
+box-shadow:0 0 0 4px rgba(79,70,229,.08);
+}
+
+/* TABLE */
 .table-wrap{
 overflow:auto;
-border-radius:14px;
+border-radius:18px;
+border:1px solid #edf0f5;
 }
+
+.table{
+margin:0;
+}
+
 .table thead th{
 position:sticky;
 top:0;
-background:#0d6efd;
+z-index:5;
+background:linear-gradient(135deg,#0d6efd,#2563eb);
 color:#fff;
+font-size:14px;
+font-weight:700;
 white-space:nowrap;
-}
-.table td,.table th{
-white-space:nowrap;
-vertical-align:middle;
+padding:14px;
 text-align:center;
+border:none;
 }
+
+.table td{
+padding:14px;
+text-align:center;
+vertical-align:middle;
+white-space:nowrap;
+font-size:14px;
+border-color:#edf0f5;
+}
+
+.table tbody tr:hover{
+background:#f8fbff;
+}
+
+/* ACTION */
 .action-btns{
 display:flex;
-gap:5px;
+gap:8px;
 justify-content:center;
+}
+
+.action-btns .btn{
+border-radius:10px;
+padding:6px 12px;
+font-weight:600;
+}
+
+/* EMPTY */
+.empty-box{
+padding:50px;
+text-align:center;
+color:#94a3b8;
+font-size:18px;
+font-weight:600;
+}
+
+/* MODAL */
+.modal-content{
+border:none;
+border-radius:22px;
+overflow:hidden;
+}
+.modal-header{
+background:linear-gradient(135deg,#4f46e5,#2563eb);
+color:#fff;
+}
+.modal-header .btn-close{
+filter:invert(1);
 }
 </style>
 
 <!-- HEADER -->
-<div class="d-flex justify-content-between mb-4">
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
 
 <div>
-<h2 class="fw-bold">Branches</h2>
-<p class="text-muted">Manage branch data professionally</p>
+<h1 class="page-title">Branches</h1>
+<p class="page-sub">Manage branch data professionally</p>
 </div>
 
-<div class="d-flex gap-2">
+<div class="d-flex flex-wrap gap-2">
 
-<a href="{% url 'export_branches' %}" class="btn btn-outline-success top-btn">
+<a href="{% url 'export_branches' %}" class="btn top-btn btn-export">
 Export Excel
 </a>
 
 <a href="{% url 'delete_all_branches' %}"
 onclick="return confirm('Delete ALL Branch data?')"
-class="btn btn-danger top-btn">
+class="btn top-btn btn-danger2">
 Delete All
 </a>
 
-<button class="btn btn-primary top-btn"
+<button class="btn top-btn btn-primary2"
 data-bs-toggle="modal"
 data-bs-target="#branchModal">
 + Add Branch
 </button>
 
-<button class="btn btn-outline-primary top-btn"
+<button class="btn top-btn btn-outline2"
 onclick="addColumn()">
 + Add Column
 </button>
 
 <a href="{% url 'delete_all_columns' %}?page=branches"
 onclick="return confirm('Delete ALL columns?')"
-class="btn btn-dark top-btn">
+class="btn top-btn btn-dark2">
 Delete All Columns
 </a>
 
 </div>
 </div>
 
-<!-- TOP -->
+<!-- TOP BOX -->
 <div class="page-card mb-4">
 
-<div class="row">
+<div class="row g-3">
 
-<div class="col-md-6">
+<div class="col-lg-6">
 <form method="POST" enctype="multipart/form-data" class="d-flex gap-2">
 {% csrf_token %}
 <input type="hidden" name="action" value="import_excel">
@@ -97,13 +232,14 @@ Upload Excel
 </form>
 </div>
 
-<div class="col-md-6">
+<div class="col-lg-6">
 <input type="text" id="searchInput" class="form-control" placeholder="Search Branch...">
 </div>
 
 </div>
 </div>
 
+<!-- COLUMN FORM -->
 <form method="POST" id="columnForm">
 {% csrf_token %}
 <input type="hidden" name="action" value="add_column">
@@ -115,17 +251,18 @@ Upload Excel
 
 <div class="table-wrap">
 
-<table class="table table-bordered table-hover" id="branchTable">
+<table class="table table-hover align-middle" id="branchTable">
 
 <thead>
 <tr>
 
 {% for col in columns %}
 <th>
-<div class="d-flex justify-content-between align-items-center">
+<div class="d-flex justify-content-between align-items-center gap-2">
+
 <span>{{ col }}</span>
 
-<form method="POST">
+<form method="POST" class="m-0">
 {% csrf_token %}
 <input type="hidden" name="action" value="delete_column">
 <input type="hidden" name="column" value="{{ col }}">
@@ -167,6 +304,17 @@ Delete
 </td>
 
 </tr>
+
+{% empty %}
+
+<tr>
+<td colspan="100%">
+<div class="empty-box">
+No branch data found
+</div>
+</td>
+</tr>
+
 {% endfor %}
 
 </tbody>
@@ -178,9 +326,9 @@ Delete
 
 </div>
 
-<!-- ADD BRANCH MODAL -->
+<!-- MODAL -->
 <div class="modal fade" id="branchModal">
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-xl">
 <div class="modal-content">
 
 <form method="POST">
@@ -188,7 +336,7 @@ Delete
 <input type="hidden" name="action" value="add_branch">
 
 <div class="modal-header">
-<h5>Add Branch</h5>
+<h5 class="mb-0">Add Branch</h5>
 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 
@@ -197,7 +345,7 @@ Delete
 <div class="row">
 
 {% for col in columns %}
-<div class="col-md-6 mb-2">
+<div class="col-md-6 mb-3">
 <input class="form-control" name="{{ col }}" placeholder="{{ col }}">
 </div>
 {% endfor %}
@@ -207,7 +355,7 @@ Delete
 </div>
 
 <div class="modal-footer">
-<button class="btn btn-success">Save</button>
+<button class="btn btn-success top-btn">Save Branch</button>
 </div>
 
 </form>
