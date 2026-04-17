@@ -31,8 +31,7 @@ class Branch(models.Model):
     year = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
-        return f"Employee {self.id}"
-
+        return f"Branch {self.id}"
 
 class BranchColumn(models.Model):
     name = models.CharField(max_length=255)
