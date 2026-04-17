@@ -58,7 +58,11 @@ onclick="return confirm('Delete ALL Branch data?')"
 class="btn btn-danger top-btn">
 Delete All
 </a>
-
+<a href="{% url 'delete_all_columns' %}"
+   class="btn btn-dark"
+   onclick="return confirm('Delete ALL columns?')">
+   Delete All Columns
+</a>
 <button class="btn btn-primary top-btn"
 data-bs-toggle="modal"
 data-bs-target="#branchModal">

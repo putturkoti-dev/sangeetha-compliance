@@ -18,7 +18,7 @@ urlpatterns = [
     path('branches/delete/<int:id>/', views.delete_branch, name='delete_branch'),
     path('branches/delete-all/', views.delete_all_branches, name='delete_all_branches'),
     path('employees/delete-all/', views.delete_all_employees, name='delete_all_employees'),
-
+    path('delete-all-columns/', views.delete_all_columns, name='delete_all_columns'),
     path('calendar/', views.calendar),
     path('notice/', views.notice),
     path('compliance/', views.compliance),

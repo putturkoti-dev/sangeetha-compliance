@@ -70,7 +70,11 @@ data-bs-target="#empModal">
 onclick="addColumn()">
 + Add Column
 </button>
-
+<a href="{% url 'delete_all_columns' %}"
+   class="btn btn-dark"
+   onclick="return confirm('Delete ALL columns?')">
+   Delete All Columns
+</a>
 </div>
 </div>
 

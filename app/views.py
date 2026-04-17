@@ -368,6 +368,13 @@ def delete_all_employees(request):
     ).delete()
 
     return redirect('/employees/?month=' + month + '&year=' + year)
+from .models import DynamicColumn
+from django.shortcuts import redirect
+
+def delete_all_columns(request):
+    DynamicColumn.objects.all().delete()
+    return redirect(request.META.get('HTTP_REFERER', '/employees/'))
+
 def edit_branch(request, id):
 
     obj = Branch.objects.get(id=id)
