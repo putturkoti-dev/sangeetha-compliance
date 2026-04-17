@@ -355,6 +355,19 @@ def delete_branch(request, id):
     Branch.objects.get(id=id).delete()
     return redirect('branches')
 
+def delete_all_branches(request):
+    Branch.objects.all().delete()
+    return redirect('branches')
+def delete_all_employees(request):
+    month = request.GET.get('month')
+    year = request.GET.get('year')
+
+    Employee.objects.filter(
+        month=month,
+        year=year
+    ).delete()
+
+    return redirect('/employees/?month=' + month + '&year=' + year)
 def edit_branch(request, id):
 
     obj = Branch.objects.get(id=id)

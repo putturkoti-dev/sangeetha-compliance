@@ -27,9 +27,15 @@ background:#0d6efd;
 color:#fff;
 white-space:nowrap;
 }
-.table td{
+.table td,.table th{
 white-space:nowrap;
 vertical-align:middle;
+text-align:center;
+}
+.action-btns{
+display:flex;
+gap:5px;
+justify-content:center;
 }
 </style>
 
@@ -43,8 +49,15 @@ vertical-align:middle;
 
 <div class="d-flex gap-2">
 
-<a href="{% url 'export_employees' %}?month={{ month }}&year={{ year }}" class="btn btn-outline-success top-btn">
+<a href="{% url 'export_employees' %}?month={{ month }}&year={{ year }}"
+class="btn btn-outline-success top-btn">
 Export Excel
+</a>
+
+<a href="{% url 'delete_all_employees' %}?month={{ month }}&year={{ year }}"
+onclick="return confirm('Delete ALL Employees data?')"
+class="btn btn-danger top-btn">
+Delete All
 </a>
 
 <button class="btn btn-primary top-btn"
@@ -67,7 +80,6 @@ onclick="addColumn()">
 <div class="row">
 
 <div class="col-md-6">
-
 <form method="POST" enctype="multipart/form-data" class="d-flex gap-2">
 {% csrf_token %}
 <input type="hidden" name="action" value="import_excel">
@@ -77,9 +89,7 @@ onclick="addColumn()">
 <button class="btn btn-success top-btn">
 Upload Excel
 </button>
-
 </form>
-
 </div>
 
 <div class="col-md-6">
@@ -87,10 +97,8 @@ Upload Excel
 </div>
 
 </div>
-
 </div>
 
-<!-- Hidden Form -->
 <form method="POST" id="columnForm">
 {% csrf_token %}
 <input type="hidden" name="action" value="add_column">
@@ -109,9 +117,7 @@ Upload Excel
 
 {% for col in columns %}
 <th>
-
 <div class="d-flex justify-content-between">
-
 <span>{{ col }}</span>
 
 <form method="POST">
@@ -122,7 +128,6 @@ Upload Excel
 </form>
 
 </div>
-
 </th>
 {% endfor %}
 
@@ -140,7 +145,8 @@ Upload Excel
 <td>{{ row.dynamic_data|get_item:col }}</td>
 {% endfor %}
 
-<td class="d-flex gap-1">
+<td>
+<div class="action-btns">
 
 <a href="{% url 'edit_employee' row.id %}" class="btn btn-warning btn-sm">
 Edit
@@ -152,6 +158,7 @@ class="btn btn-danger btn-sm">
 Delete
 </a>
 
+</div>
 </td>
 
 </tr>
@@ -205,29 +212,22 @@ Delete
 </div>
 
 <script>
-
 function addColumn(){
 let col = prompt("Enter column name");
 if(!col) return;
-
 document.getElementById("new_column_input").value = col;
 document.getElementById("columnForm").submit();
 }
 
 document.getElementById("searchInput").addEventListener("keyup", function(){
-
 let value = this.value.toLowerCase();
 let rows = document.querySelectorAll("#empTable tbody tr");
 
 rows.forEach(function(row){
 row.style.display =
-row.innerText.toLowerCase().includes(value)
-? ""
-: "none";
+row.innerText.toLowerCase().includes(value) ? "" : "none";
 });
-
 });
-
 </script>
 
 {% endblock %}

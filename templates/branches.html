@@ -27,8 +27,15 @@ background:#0d6efd;
 color:#fff;
 white-space:nowrap;
 }
-.table td{
+.table td,.table th{
 white-space:nowrap;
+vertical-align:middle;
+text-align:center;
+}
+.action-btns{
+display:flex;
+gap:5px;
+justify-content:center;
 }
 </style>
 
@@ -44,6 +51,12 @@ white-space:nowrap;
 
 <a href="{% url 'export_branches' %}" class="btn btn-outline-success top-btn">
 Export Excel
+</a>
+
+<a href="{% url 'delete_all_branches' %}"
+onclick="return confirm('Delete ALL Branch data?')"
+class="btn btn-danger top-btn">
+Delete All
 </a>
 
 <button class="btn btn-primary top-btn"
@@ -89,13 +102,10 @@ Upload Excel
 
 <thead>
 <tr>
-
 {% for col in columns %}
 <th>{{ col }}</th>
 {% endfor %}
-
 <th>Action</th>
-
 </tr>
 </thead>
 
@@ -108,7 +118,8 @@ Upload Excel
 <td>{{ row.dynamic_data|get_item:col }}</td>
 {% endfor %}
 
-<td class="d-flex gap-1">
+<td>
+<div class="action-btns">
 
 <a href="{% url 'edit_branch' row.id %}" class="btn btn-warning btn-sm">
 Edit
@@ -120,6 +131,7 @@ class="btn btn-danger btn-sm">
 Delete
 </a>
 
+</div>
 </td>
 
 </tr>
@@ -134,60 +146,16 @@ Delete
 
 </div>
 
-<!-- ADD MODAL -->
-<div class="modal fade" id="branchModal">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-
-<form method="POST">
-{% csrf_token %}
-<input type="hidden" name="action" value="add_branch">
-
-<div class="modal-header">
-<h5>Add Branch</h5>
-<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-</div>
-
-<div class="modal-body">
-
-<div class="row">
-
-{% for col in columns %}
-<div class="col-md-6 mb-2">
-<input class="form-control" name="{{ col }}" placeholder="{{ col }}">
-</div>
-{% endfor %}
-
-</div>
-
-</div>
-
-<div class="modal-footer">
-<button class="btn btn-success">Save</button>
-</div>
-
-</form>
-
-</div>
-</div>
-</div>
-
 <script>
-
 document.getElementById("searchInput").addEventListener("keyup", function () {
-
 let value = this.value.toLowerCase();
 let rows = document.querySelectorAll("#branchTable tbody tr");
 
 rows.forEach(function(row){
 row.style.display =
-row.innerText.toLowerCase().includes(value)
-? ""
-: "none";
+row.innerText.toLowerCase().includes(value) ? "" : "none";
 });
-
 });
-
 </script>
 
 {% endblock %}

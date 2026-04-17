@@ -16,7 +16,8 @@ urlpatterns = [
     path('branches/export/', views.export_branches, name='export_branches'),
     path('branches/edit/<int:id>/', views.edit_branch, name='edit_branch'),
     path('branches/delete/<int:id>/', views.delete_branch, name='delete_branch'),
-
+    path('branches/delete-all/', views.delete_all_branches, name='delete_all_branches'),
+    path('employees/delete-all/', views.delete_all_employees, name='delete_all_employees'),
 
     path('calendar/', views.calendar),
     path('notice/', views.notice),
