@@ -372,30 +372,29 @@ from .models import DynamicColumn
 from django.shortcuts import redirect
 
 from django.shortcuts import redirect
-
 def delete_all_columns(request):
-    from .models import DynamicColumn, Branch, Employee
+    from .models import DynamicColumn, BranchColumn, Branch, Employee
 
     page = request.GET.get("page")
 
-    # delete all saved headers
-    DynamicColumn.objects.all().delete()
+    if page == "branches":
 
-    # clear employee columns/data
-    for e in Employee.objects.all():
-        e.dynamic_data = {}
-        e.save()
+        BranchColumn.objects.all().delete()
 
-    # clear branch columns/data
-    for b in Branch.objects.all():
-        if hasattr(b, 'dynamic_data'):
+        for b in Branch.objects.all():
             b.dynamic_data = {}
             b.save()
 
-    # redirect properly
-    if page == "branches":
         return redirect("/branches/")
+
     else:
+
+        DynamicColumn.objects.all().delete()
+
+        for e in Employee.objects.all():
+            e.dynamic_data = {}
+            e.save()
+
         return redirect("/employees/")
 
 def edit_branch(request, id):
