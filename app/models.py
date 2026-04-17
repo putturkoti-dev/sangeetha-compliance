@@ -27,9 +27,11 @@ class DynamicColumn(models.Model):
 # =========================
 class Branch(models.Model):
     dynamic_data = models.JSONField(default=dict)
+    month = models.CharField(max_length=20, blank=True, null=True)
+    year = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
-        return f"Branch {self.id}"
+        return f"Employee {self.id}"
 
 
 class BranchColumn(models.Model):

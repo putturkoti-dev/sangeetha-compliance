@@ -223,8 +223,21 @@ def export_employees(request):
 # =========================
 def branches(request):
 
-    data = Branch.objects.all().order_by('-id')
-    columns = BranchColumn.objects.all().values_list('name', flat=True)
+    month = request.GET.get('month')
+    year = request.GET.get('year')
+
+    if not month:
+        month = str(datetime.now().month)
+
+    if not year:
+        year = str(datetime.now().year)
+
+    data = Branch.objects.filter(month=month, year=year).order_by('-id')
+
+    columns = DynamicColumn.objects.filter(
+        month=month,
+        year=year
+    ).values_list('name', flat=True)
 
     if request.method == "POST":
 
@@ -232,24 +245,26 @@ def branches(request):
 
         # ADD COLUMN
         if action == "add_column":
-
             col = request.POST.get("new_column")
-
             if col:
-                BranchColumn.objects.get_or_create(name=col)
-
-            return redirect('branches')
+                DynamicColumn.objects.get_or_create(
+                    name=col,
+                    month=month,
+                    year=year
+                )
+            return redirect(request.get_full_path())
 
         # DELETE COLUMN
         if action == "delete_column":
-
             col = request.POST.get("column")
+            DynamicColumn.objects.filter(
+                name=col,
+                month=month,
+                year=year
+            ).delete()
+            return redirect(request.get_full_path())
 
-            BranchColumn.objects.filter(name=col).delete()
-
-            return redirect('branches')
-
-        # ADD BRANCH
+        # ADD EMPLOYEE
         if action == "add_branch":
 
             dynamic_data = {
@@ -257,9 +272,13 @@ def branches(request):
                 if k not in ['csrfmiddlewaretoken', 'action']
             }
 
-            Branch.objects.create(dynamic_data=dynamic_data)
+            Branch.objects.create(
+                dynamic_data=dynamic_data,
+                month=month,
+                year=year
+            )
 
-            return redirect('branches')
+            return redirect(request.get_full_path())
 
         # IMPORT EXCEL
         if action == "import_excel":
@@ -267,24 +286,44 @@ def branches(request):
             file = request.FILES.get("excel_file")
 
             if file:
+                import pandas as pd
 
                 df = pd.read_excel(file).fillna("")
 
+                # create columns
                 for col in df.columns:
-                    BranchColumn.objects.get_or_create(name=col)
-
-                for _, row in df.iterrows():
-
-                    Branch.objects.create(
-                        dynamic_data=row.to_dict()
+                    DynamicColumn.objects.get_or_create(
+                        name=str(col),
+                        month=month,
+                        year=year
                     )
 
-            return redirect('branches')
+                # rows insert
+                for _, row in df.iterrows():
+
+                    clean_data = {}
+
+                    for col in df.columns:
+                        val = row[col]
+
+                        # convert everything to string
+                        clean_data[str(col)] = str(val).strip()
+
+                    Branch.objects.create(
+                        dynamic_data=clean_data,
+                        month=month,
+                        year=year
+                    )
+
+            return redirect(request.get_full_path())
 
     return render(request, 'branches.html', {
         'data': data,
-        'columns': columns
+        'columns': columns,
+        'month': month,
+        'year': year
     })
+
 # =========================
 # BRANCH EXCEL UPLOAD
 # =========================
