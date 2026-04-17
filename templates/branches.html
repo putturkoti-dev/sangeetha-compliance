@@ -188,10 +188,10 @@ filter:invert(1);
 Export Excel
 </a>
 
-<a href="{% url 'delete_all_branches' %}"
-onclick="return confirm('Delete ALL Branch data?')"
-class="btn top-btn btn-danger2">
-Delete All
+<a href="/branches/delete-all/?month={{ month }}&year={{ year }}"
+   class="btn btn-danger"
+   onclick="return confirm('Delete all branch data for selected month/year?')">
+   Delete All
 </a>
 
 <button class="btn top-btn btn-primary2"

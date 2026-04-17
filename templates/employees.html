@@ -189,10 +189,10 @@ class="btn top-btn btn-export">
 Export Excel
 </a>
 
-<a href="{% url 'delete_all_employees' %}?month={{ month }}&year={{ year }}"
-onclick="return confirm('Delete ALL Employees data?')"
-class="btn top-btn btn-danger2">
-Delete All
+<a href="/employees/delete-all/?month={{ month }}&year={{ year }}"
+   class="btn btn-danger"
+   onclick="return confirm('Delete all employee data for selected month/year?')">
+   Delete All
 </a>
 
 <button class="btn top-btn btn-primary2"

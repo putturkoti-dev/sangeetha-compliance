@@ -336,7 +336,13 @@ def export_branches(request):
     ws = wb.active
     ws.title = "Branches"
 
-    data = Branch.objects.all().order_by("id")
+    month = request.GET.get('month')
+    year = request.GET.get('year')
+
+    data = Branch.objects.filter(
+        month=month,
+        year=year
+    ).order_by("id")
 
     if not data.exists():
         response = HttpResponse(
@@ -374,26 +380,40 @@ def export_branches(request):
 # DELETE BRANCH
 # =========================
 def delete_branch(request, id):
-    Branch.objects.get(id=id).delete()
-    return redirect('branches')
+    obj = Branch.objects.get(id=id)
+
+    month = obj.month or ""
+    year = obj.year or ""
+
+    obj.delete()
+
+    return redirect('/branches/?month=' + str(month) + '&year=' + str(year))
+
 
 def delete_all_branches(request):
-    Branch.objects.all().delete()
-    return redirect('branches')
+    month = request.GET.get('month', '')
+    year = request.GET.get('year', '')
+
+    Branch.objects.filter(
+        month=month,
+        year=year
+    ).delete()
+
+    return redirect('/branches/?month=' + str(month) + '&year=' + str(year))
+
+
 def delete_all_employees(request):
-    month = request.GET.get('month')
-    year = request.GET.get('year')
+    month = request.GET.get('month', '')
+    year = request.GET.get('year', '')
 
     Employee.objects.filter(
         month=month,
         year=year
     ).delete()
 
-    return redirect('/employees/?month=' + month + '&year=' + year)
-from .models import DynamicColumn
-from django.shortcuts import redirect
+    return redirect('/employees/?month=' + str(month) + '&year=' + str(year))
 
-from django.shortcuts import redirect
+
 def delete_all_columns(request):
     from .models import DynamicColumn, BranchColumn, Branch, Employee
 
@@ -418,7 +438,6 @@ def delete_all_columns(request):
             e.save()
 
         return redirect("/employees/")
-
 def edit_branch(request, id):
 
     obj = Branch.objects.get(id=id)
@@ -434,7 +453,7 @@ def edit_branch(request, id):
         obj.dynamic_data = dynamic_data
         obj.save()
 
-        return redirect('branches')
+        return redirect('/branches/?month=' + obj.month + '&year=' + obj.year)
 
     return render(request, 'edit_branch.html', {
         'obj': obj,
