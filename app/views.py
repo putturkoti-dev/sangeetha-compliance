@@ -371,23 +371,32 @@ def delete_all_employees(request):
 from .models import DynamicColumn
 from django.shortcuts import redirect
 
+from django.shortcuts import redirect
+
 def delete_all_columns(request):
     from .models import DynamicColumn, Branch, Employee
 
+    page = request.GET.get("page")
+
+    # delete all saved headers
     DynamicColumn.objects.all().delete()
 
-    # Clear employee json headers
+    # clear employee columns/data
     for e in Employee.objects.all():
         e.dynamic_data = {}
         e.save()
 
-    # Clear branch json headers
+    # clear branch columns/data
     for b in Branch.objects.all():
         if hasattr(b, 'dynamic_data'):
             b.dynamic_data = {}
             b.save()
 
-    return redirect(request.META.get('HTTP_REFERER', '/employees/'))
+    # redirect properly
+    if page == "branches":
+        return redirect("/branches/")
+    else:
+        return redirect("/employees/")
 
 def edit_branch(request, id):
 
